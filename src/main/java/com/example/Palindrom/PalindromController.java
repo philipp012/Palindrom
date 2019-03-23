@@ -8,21 +8,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class PalindromController {
-    @GetMapping("/")
+    @GetMapping("/index")
     public String createModel(Model model) {
-        model.addAttribute("text", new String());
-        return "text";
+        model.addAttribute("palindrom", new Palindrom());
+        return "/index";
     }
 
-    @PostMapping("/")
-    public String checkPalindrom(@ModelAttribute String text) {
-            StringBuilder sb = new StringBuilder(text);
-            String reverseWord = sb.reverse().toString();
-            if (text.equals(reverseWord)) {
-                return  text + " ist ein Palin" +
-                        "drom";
-            } else {
-                return text + " ist kein Palindrom";
-            }
+    @PostMapping("/index")
+    public String checkPalindrom(@ModelAttribute Palindrom palindrom, Model model) {
+        StringBuilder sb = new StringBuilder(palindrom.getText());
+        String reverseWord = sb.reverse().toString();
+        if (palindrom.getText().equals(reverseWord)) {
+            palindrom.setOutput(palindrom.getText() + " ist ein Palindrom");
+        } else {
+            palindrom.setOutput(palindrom.getText() + " ist kein Palindrom");
+        }
+        model.addAttribute("palindrom", palindrom);
+        return "/index";
     }
 }
